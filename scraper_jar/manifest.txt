@@ -1,0 +1,3 @@
+Manifest-Version: 1.0
+Created-By: Nesterenko Ivan
+Main-Class: ru.webscrapper.scrapper.Scrapper
