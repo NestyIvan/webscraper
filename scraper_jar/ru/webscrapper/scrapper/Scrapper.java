@@ -22,36 +22,58 @@ o   (must) count number of provided word(s) occurrence on webpage(s). (-w)
 o   (must) count number of characters of each web page (-c)
 o   (nice to have) extract sentences’ which contain given words (-e)
  *
+ *Command line parameters example for Java implementation:
+ *java –jar scraper.jar http://www.cnn.com Greece,default –v –w –c –e
  */
 public class Scrapper 
 {
 	public static void main( String[] args )
     {
     	try {
-    		//words = "instead;курс;streams;background;resources";	
-    		//source = "d:\\workspace\\urlList.txt";
-    		//source = "http://www.hireright.com/resources";
     		/*
     		String[] targs = {"d:\\workspace\\urlList.txt"
-    						 ,"instead,курс,streams,background,resources,Greece,default"
+    						 ,"курс,background,resources,Greece,default"
     						 ,"-v"
     						 ,"-w"
     						 ,"-c"
     						 ,"-e"
     						 };
     		*/
-			Settings.loadSettings( args );
+    		Settings.loadSettings( args );
 	    	List<String> urlList = getURLList();
+	    	//We need to join threads to wait for the end of all operations
+	    	Thread[] arrPageThreads = new Thread[urlList.size()];
+	    	Thread mLog = new MainLog();
+	    	int iterate = 0;
 	    	
-	    	for(String url : urlList){
-		    	Page pp = new Page(url);
-		        pp.parsePage();
+	    	for(String url : urlList){			    	
+	    		Thread pp = new Page(url, mLog);
+	    		arrPageThreads[iterate++] = pp;
+		        pp.start();
 	    	}
+	    	
+	    	for(int i = 0; i < arrPageThreads.length; i++){
+	    		try {
+					arrPageThreads[i].join();
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+	    	}
+	    	
+			((MainLog) mLog).printLog();
 		} catch (InsufficientResourcesException e) {
 			System.out.println("Insufficient number of input parameters!" + e.getMessage());
 		}
     }
-    
+    /**
+     * Returns the list of URLs. The number of items will be:
+     * 1 - if there is a link in source
+     * n - if there is a path to file in source(n - number of links in the file)
+     * <p>
+     * In case of path to file, function read it line by line and store links in it.
+     * Links in the file should be stored on separate lines.
+     * @return the list of URLS
+     */
 	private static List<String> getURLList(){
 		String source = Settings.getSource();
 		List<String> sourceList = new ArrayList<String>();

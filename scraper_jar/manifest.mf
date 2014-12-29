@@ -1,4 +1,0 @@
-Manifest-Version: 1.0
-Created-By: NestyIvan
-Main-Class: ru.webscrapper.scrapper.Scrapper
-

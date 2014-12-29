@@ -1,6 +1,7 @@
 ru\webscrapper\scrapper\Page.class
-ru\webscrapper\scrapper\ParsedPage.class
+ru\webscrapper\scrapper\MainLog.class
 ru\webscrapper\scrapper\Timer.class
-ru\webscrapper\scrapper\Log.class
 ru\webscrapper\scrapper\Settings.class
 ru\webscrapper\scrapper\Scrapper.class
+ru\webscrapper\scrapper\ParsedPage.class
+ru\webscrapper\scrapper\Log.class

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<testsuite failures="0" time="0.078" errors="0" skipped="0" tests="2" name="ru.webscrapper.scrapper.ParsedPageTest">
+<testsuite failures="0" time="3.378" errors="0" skipped="0" tests="1" name="ru.webscrapper.scrapper.ScraperTest">
   <properties>
     <property name="java.runtime.name" value="Java(TM) SE Runtime Environment"/>
     <property name="sun.boot.library.path" value="c:\Program Files\Java\jdk1.7.0_71\jre\bin"/>
@@ -60,6 +60,5 @@
     <property name="sun.desktop" value="windows"/>
     <property name="sun.cpu.isalist" value="amd64"/>
   </properties>
-  <testcase time="0.047" classname="ru.webscrapper.scrapper.ParsedPageTest" name="testBody"/>
-  <testcase time="0.031" classname="ru.webscrapper.scrapper.ParsedPageTest" name="testHTML"/>
+  <testcase time="3.378" classname="ru.webscrapper.scrapper.ScraperTest" name="testScraperMain"/>
 </testsuite>

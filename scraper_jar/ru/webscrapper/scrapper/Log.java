@@ -2,9 +2,13 @@ package ru.webscrapper.scrapper;
 
 import java.util.ArrayList;
 import java.util.List;
-
+/**
+ * 
+ * @author Ivan Nesterenko
+ *
+ */
 public class Log {
-	private List<String> logInfo;
+	protected List<String> logInfo;
 	
 	Log(){
 		logInfo = new ArrayList<String>();
@@ -19,9 +23,12 @@ public class Log {
 	}
 	
 	public void printLog(){
-        for(String s : logInfo){
-        	System.out.println(s);
-        }	
-        System.out.println();
+		/*Most JVM, actually, don't intersect output. But it would be safer to synchronize output...*/
+		//synchronized(System.out){
+	        for(String s : logInfo){
+	        	System.out.println(s);
+	        }	
+	        System.out.println();
+		//}
 	}
 }

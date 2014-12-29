@@ -1,3 +1,4 @@
 http://www.yandex.ru/
 http://stackoverflow.com/questions/10269862/java-reading-from-a-file-input-stream-vs-reader
 http://www.hireright.com/
+http://www.cnn.com
