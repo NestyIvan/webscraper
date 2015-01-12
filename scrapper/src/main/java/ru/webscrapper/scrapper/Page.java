@@ -25,13 +25,13 @@ public class Page extends Thread {
 	private String urlContent = null;
 	private Timer pageTimer = null;
 	private ParsedPage parseContent = null; 
-	private Thread logMain;
+	private MainLog logMain;
 	/**
 	 * Class constructor.
 	 * @param link to a URL
 	 * @param link to the main thread log
 	 */
-	Page(String link, Thread mLog){
+	Page(String link, MainLog mLog){
 		pageLog.addLine("Start processing url: " + link);
 		this.link = link;
 		pageTimer = new Timer();
@@ -90,10 +90,8 @@ public class Page extends Thread {
         pageLog.addLine(pageTimer.getMessageForLog());
         pageLog.printLog();
         
-        synchronized(logMain){
-        	((MainLog) logMain).addScrappingTimeStatistic(pageTimer.getTimeSpentOnScrapping());
-        	((MainLog) logMain).addProcessingTimeStatistic(pageTimer.getTimeSpentOnProcessing());
-        }
+        logMain.addScrappingTimeStatistic(pageTimer.getTimeSpentOnScrapping());
+        logMain.addProcessingTimeStatistic(pageTimer.getTimeSpentOnProcessing());
 	}
 	/**
 	 * Collecting statistics of the specified word list occurences on the page.
@@ -128,9 +126,7 @@ public class Page extends Thread {
 			if(count > 0){
 				extractedSentences.append(extractSentence(word, text, wordMatch));
 			}
-			synchronized(logMain){
-				((MainLog) logMain).addWordStatistic(word, count);
-			}
+			logMain.addWordStatistic(word, count);
 		}
 		
 		pageLog.addLine(logMessage.toString());
@@ -148,7 +144,7 @@ public class Page extends Thread {
 		
 		if((Settings.getExractSentences()) && (wordMatch != null)){
 			wordMatch.reset();
-			retVal.append("The word \"" + word + "\" occured in followed sentences:");			
+			retVal.append("The word \"" + word + "\" occured in following sentences:");			
 			while (wordMatch.find()){
 				int wordPosBegin = wordMatch.start();
 				int sentBegin = text.lastIndexOf(".", wordPosBegin);				
@@ -156,6 +152,7 @@ public class Page extends Thread {
 				retVal.append("\n");
 				retVal.append(text.substring(sentBegin, sentEnd));				
 			}
+			retVal.append("\n");
 		} 
 		
 		return retVal.toString();
@@ -171,11 +168,9 @@ public class Page extends Thread {
 		if(Settings.getCountCharactersNumber()){
 	        //Empty character - to get the content from the page without any additional symbols        
 	        String noDelimeterText = parseContent.getNoHTML("");
-	        int charNumer = noDelimeterText.length();
-	        pageLog.addLine("The number of characters on the page: " + charNumer);
-			synchronized(logMain){
-				((MainLog) logMain).addCharactersStatistic(charNumer);
-			}
+	        int charNumber = noDelimeterText.length();
+	        pageLog.addLine("The number of characters on the page: " + charNumber);
+			logMain.addCharactersStatistic(charNumber);
 		}
 	}
 }

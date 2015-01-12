@@ -29,42 +29,50 @@ public class Scrapper
 {
 	public static void main( String[] args )
     {
-    	try {
-    		/*
+    	try {    		
+    		
     		String[] targs = {"d:\\workspace\\urlList.txt"
     						 ,"курс,background,resources,Greece,default"
     						 ,"-v"
     						 ,"-w"
     						 ,"-c"
     						 ,"-e"
-    						 };
-    		*/
-    		Settings.loadSettings( args );
-	    	List<String> urlList = getURLList();
-	    	//We need to join threads to wait for the end of all operations
-	    	Thread[] arrPageThreads = new Thread[urlList.size()];
-	    	Thread mLog = new MainLog();
-	    	int iterate = 0;
-	    	
-	    	for(String url : urlList){			    	
-	    		Thread pp = new Page(url, mLog);
-	    		arrPageThreads[iterate++] = pp;
-		        pp.start();
-	    	}
-	    	
-	    	for(int i = 0; i < arrPageThreads.length; i++){
-	    		try {
-					arrPageThreads[i].join();
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-				}
-	    	}
-	    	
-			((MainLog) mLog).printLog();
+    						 };    		
+    		Settings.loadSettings( targs );
+    		
+    		runProcessing();
 		} catch (InsufficientResourcesException e) {
-			System.out.println("Insufficient number of input parameters!" + e.getMessage());
+			System.out.println("Insufficient number of input parameters!");
 		}
     }
+	/**
+	 * Method that run threads for the pages. Wait for all pages were processed
+	 * and finally print a summarize report.
+	 */
+	private static void runProcessing(){
+    	List<String> urlList = getURLList();
+    	//We need to join threads to wait for the end of all operations
+    	Thread[] arrPageThreads = new Thread[urlList.size()];
+    	MainLog mLog = new MainLog();
+    	int iterate = 0;
+    	//create and run threads for every url
+    	for(String url : urlList){			    	
+    		Thread pageThread = new Page(url, mLog);
+    		arrPageThreads[iterate++] = pageThread;
+    		pageThread.start();
+    	}
+    	//stop running main thread until all pages not processed
+    	for(int i = 0; i < arrPageThreads.length; i++){
+    		try {
+				arrPageThreads[i].join();
+			} catch (InterruptedException e) {
+				e.printStackTrace();					
+			}
+    	}
+    	//print summarize result
+		mLog.printLog();
+	}
+	
     /**
      * Returns the list of URLs. The number of items will be:
      * 1 - if there is a link in source

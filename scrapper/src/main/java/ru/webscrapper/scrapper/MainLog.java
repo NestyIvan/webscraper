@@ -1,25 +1,27 @@
 package ru.webscrapper.scrapper;
 
-import java.util.HashMap;
+import java.util.Collections;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.TreeMap;
 /**
  * 
  * @author Ivan Nesterenko
  * This class is the main log. It collects total information about all other pages processings.
  *
  */
-public class MainLog extends Thread{
-	private Map<String, Integer> wordStatistic = new HashMap<String, Integer>();
-	private int countCharacters = 0;
-	private long timeScrapping = 0;
-	private long timeProcessing = 0;
+public class MainLog{
+	private Map<String, Integer> wordStatistic =  Collections.synchronizedMap(new TreeMap<String, Integer>());
+	volatile private int countCharacters = 0;
+	volatile private long timeScrapping = 0;
+	volatile private long timeProcessing = 0;
+
 	/**
 	 * Method collects total statistic for words
 	 * @param word
 	 * @param count
 	 */
-	public void addWordStatistic(String word, int count){
+	public synchronized void addWordStatistic(String word, int count){
 		if(wordStatistic.containsKey(word)){
 			int prevValue = wordStatistic.get(word);
 			wordStatistic.put(word, prevValue + count);
