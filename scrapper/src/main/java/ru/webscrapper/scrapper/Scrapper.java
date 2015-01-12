@@ -30,16 +30,16 @@ public class Scrapper
 	public static void main( String[] args )
     {
     	try {    		
-    		
+    		/*
     		String[] targs = {"d:\\workspace\\urlList.txt"
     						 ,"курс,background,resources,Greece,default"
     						 ,"-v"
     						 ,"-w"
     						 ,"-c"
     						 ,"-e"
-    						 };    		
-    		Settings.loadSettings( targs );
-    		
+    						 };    
+    		*/
+    		Settings.loadSettings( args );    		
     		runProcessing();
 		} catch (InsufficientResourcesException e) {
 			System.out.println("Insufficient number of input parameters!");
